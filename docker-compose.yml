@@ -2,7 +2,7 @@ version: '3'
 
 services:
   php:
-    image: yiisoftware/yii2-php:7.1-fpm
+    image: yiisoftware/yii2-php:7.4-fpm
     working_dir: /app
     volumes:
       - ~/.composer-docker/cache:/var/www/.composer/cache:delegated
