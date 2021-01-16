@@ -1,0 +1,14 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 15010,
+      "askForPassword": true,
+      "driver": "PostgreSQL",
+      "name": "kit",
+      "database": "kit",
+      "username": "postgres"
+    }
+  ]
+}
