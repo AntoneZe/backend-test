@@ -18,6 +18,9 @@ $config = [
             'enableAutoLogin' => true,
             'as afterLogin' => common\behaviors\LoginTimestampBehavior::class,
         ],
+        'view' => [
+            'class' => \backend\components\View::class,
+        ],
     ],
     'modules' => [
         'system' => [

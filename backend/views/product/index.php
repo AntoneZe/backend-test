@@ -1,17 +1,20 @@
 <?php
 
-use common\enums\GenderEnum;
 use common\grid\ActionColumn;
 use common\grid\IsPublishedColumn;
 use common\models\Product;
+use trntv\yii\datetime\DateTimeWidget;
+use yii\helpers\Html;
+use yii\web\JsExpression;
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
-use yii\helpers\Html;
 use backend\components\View;
+
 
 /**
  * @var $this View
  * @var $dataProvider ActiveDataProvider
+ * @var $searchModel backend\models\search\ProductSearch
  */
 
 $this->title = Yii::t('backend', 'Product');
@@ -25,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
   <?php echo GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
         'options' => [
             'class' => 'grid-view table-responsive'
         ],
@@ -36,24 +40,33 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'category.title'
             ],
             [
-                'attribute' => 'gender_id',
-                'value' => static function ($model) {
-                    /** @var $model Product */
-                    return GenderEnum::getValue($model->gender_id);
-                }
+                'attribute' => 'created_at',
+                'format' => 'datetime',
+                'filter' => DateTimeWidget::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'created_at',
+                    'phpDatetimeFormat' => 'dd.MM.yyyy',
+                    'momentDatetimeFormat' => 'DD.MM.YYYY',
+                    'clientEvents' => [
+                        'dp.change' => new JsExpression('(e) => $(e.target).find("input").trigger("change.yiiGridView")')
+                    ],
+                ])
             ],
             [
-                'attribute' => 'price_type_id',
-                'value' => 'priceType.title'
+                'attribute' => 'updated_at',
+                'format' => 'datetime',
+                'filter' => DateTimeWidget::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'updated_at',
+                    'phpDatetimeFormat' => 'dd.MM.yyyy',
+                    'momentDatetimeFormat' => 'DD.MM.YYYY',
+                    'clientEvents' => [
+                        'dp.change' => new JsExpression('(e) => $(e.target).find("input").trigger("change.yiiGridView")')
+                    ],
+                ])
             ],
-            [
-                'attribute' => 'partner_id',
-                'value' => 'partner.title'
-            ],
-            'promo_code',
-            'created_at:date',
-            'updated_at:date',
-            ['class' => IsPublishedColumn::class],
+            'is_published',
+            // ['class' => IsPublishedColumn::class],
             ['class' => ActionColumn::class],
         ],
     ]); ?>

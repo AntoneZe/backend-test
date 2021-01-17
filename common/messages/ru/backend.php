@@ -84,6 +84,8 @@ return [
     'Logout' => 'Выход',
     'Logs' => 'Журнал',
     'Main' => 'Главная',
+    'Product' => 'Продукт',
+    'Create Product' => 'Создать Продукт',
     'Male' => 'Мужской',
     'Member since {0, date, short}' => 'Участник с {0, date, short}',
     'Memory' => 'Память',

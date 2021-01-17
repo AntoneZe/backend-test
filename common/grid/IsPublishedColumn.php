@@ -27,7 +27,7 @@ class IsPublishedColumn extends BooleanColumn
     public function init()
     {
         $this->toggleUrl = Url::to(['toggle-is-published']);
-        $this->header = Yii::t('app', 'Is Published');
+        $this->header = Yii::t('app', 'Опубликован');
 
         parent::init();
     }

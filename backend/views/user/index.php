@@ -19,13 +19,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
-    <p>
-        <?php echo Html::a(Yii::t('backend', 'Create {modelClass}', [
+  <p>
+    <?php echo Html::a(Yii::t('backend', 'Create {modelClass}', [
             'modelClass' => 'User',
         ]), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+  </p>
 
-    <?php echo GridView::widget([
+  <?php echo GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'options' => [
@@ -84,7 +84,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'visibleButtons' => [
                     'login' => Yii::$app->user->can('administrator')
                 ]
-
             ],
         ],
     ]); ?>

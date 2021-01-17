@@ -2,25 +2,28 @@
 
 namespace backend\models\search;
 
-use common\models\User;
+use common\models\Product;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use Yii;
+
 
 /**
- * UserSearch represents the model behind the search form about `common\models\User`.
+ * ProductSearch represents the model behind the search form about `common\models\Product`.
  */
-class UserSearch extends User
+class ProductSearch extends Product
 {
+
     /**
      * @inheritdoc
      */
     public function rules(): array
     {
         return [
-            [['id', 'status'], 'integer'],
-            [['created_at', 'updated_at', 'logged_at'], 'filter', 'filter' => 'strtotime', 'skipOnEmpty' => true],
-            [['created_at', 'updated_at', 'logged_at'], 'default', 'value' => null],
-            [['username', 'auth_key', 'password_hash', 'email'], 'safe'],
+            [['id'], 'integer'],
+            [['created_at', 'updated_at'], 'filter', 'filter' => 'strtotime', 'skipOnEmpty' => true],
+            [['created_at', 'updated_at'], 'default', 'value' => null],
+            [['title', 'categoryName'], 'safe'],
         ];
     }
 
@@ -39,8 +42,9 @@ class UserSearch extends User
      */
     public function search($params): ActiveDataProvider
     {
-        $query = User::find();
-
+        $query = Product::find();
+        // ->with(['productCategory']);
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -51,7 +55,7 @@ class UserSearch extends User
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
+            'category_id' => $this->category_id
         ]);
 
         if ($this->created_at !== null) {
@@ -62,14 +66,8 @@ class UserSearch extends User
             $query->andFilterWhere(['between', 'updated_at', $this->updated_at, $this->updated_at + 3600 * 24]);
         }
 
-        if ($this->logged_at !== null) {
-            $query->andFilterWhere(['between', 'logged_at', $this->logged_at, $this->logged_at + 3600 * 24]);
-        }
 
-        $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
-            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
-            ->andFilterWhere(['like', 'email', $this->email]);
+        $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }

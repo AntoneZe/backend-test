@@ -1,10 +1,14 @@
 <?php
 
+use common\enums\GenderEnum;
 use common\models\Gift;
-use common\models\ProductCategory;
+use common\models\GiftCategory;
+use common\models\Partner;
+use common\models\PriceType;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use backend\components\View;
+use yii\widgets\MaskedInput;
 
 /**
  * @var $this View
@@ -12,11 +16,10 @@ use backend\components\View;
  */
 ?>
 
-<div class="Product-form">
+<div class="ProductCategory-form">
 
   <?php $form = ActiveForm::begin() ?>
   <?php echo $form->field($model, 'title') ?>
-  <?php echo $form->field($model, 'category_id')->dropDownList(ProductCategory::getList()) ?>
   <?php echo $form->field($model, 'is_published')->checkbox() ?>
   <?php echo $this->formSubmit($model->isNewRecord); ?>
   <?php ActiveForm::end() ?>

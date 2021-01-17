@@ -5,14 +5,14 @@ use yii\widgets\DetailView;
 
 /**
  * @var $this yii\web\View
- * @var $model common\models\User
+ * @var $model common\models\Product
  */
 
-$this->title = $model->getPublicIdentity();
-$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Users'), 'url' => ['index']];
+$this->title = "Подукт";
+$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Products'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-view">
+<div class="product-view">
 
   <p>
     <?php echo Html::a(Yii::t('backend', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -29,13 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'username',
-            'auth_key',
-            'email:email',
-            'status',
-            'created_at:datetime',
-            'updated_at:datetime',
-            'logged_at:datetime',
+            'title',
         ],
     ]) ?>
 

@@ -5,26 +5,27 @@ namespace common\models\base;
 use Yii;
 use yii\db\ActiveQuery;
 use common\db\ActiveRecord;
-use common\queries\ProductQuery;
+use common\queries\ProductCategoryQuery;
 
 /**
  * This is the model class for table "gift".
  *
  * @property int $id
  * @property string $title
- * @property int $category_id
  * @property bool $is_published
- * 
- * @property BaseProductCategory $category
+ * @property int|null $created_at
+ * @property int|null $updated_at
+ *
+ * @property BaseGift[] $gifts
  */
-class BaseProduct extends ActiveRecord
+class BaseProductCategory extends ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName(): string
     {
-        return 'product';
+        return 'product_category';
     }
 
     /**
@@ -33,12 +34,11 @@ class BaseProduct extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['title', 'category_id'], 'required'],
-            [['category_id', 'created_at', 'updated_at'], 'default', 'value' => null],
-            [['category_id', 'created_at', 'updated_at'], 'integer'],
+            [['title'], 'required'],
+            [['created_at', 'updated_at'], 'default', 'value' => null],
+            [['created_at', 'updated_at'], 'integer'],
             [['is_published'], 'boolean'],
             [['title'], 'string', 'max' => 255],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => BaseProductCategory::class, 'targetAttribute' => ['category_id' => 'id']],
         ];
     }
 
@@ -50,27 +50,27 @@ class BaseProduct extends ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'title' => Yii::t('app', 'Название'),
-            'category_id' => Yii::t('app', 'Category ID'),
             'is_published' => Yii::t('app', 'Опубликован'),
             'created_at' => Yii::t('app', 'Время создания'),
             'updated_at' => Yii::t('app', 'Время обновления'),
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     * @return ProductQuery the active query used by this AR class.
-     */
-    public static function find(): ProductQuery
-    {
-        return new ProductQuery(static::class);
-    }
 
     /**
+     * {@inheritdoc}
+     * @return ProductCategoryQuery the active query used by this AR class.
+     */
+    public static function find(): ProductCategoryQuery
+    {
+        return new ProductCategoryQuery(static::class);
+    }
+
+        /**
      * @return ActiveQuery
      */
-    public function getCategory(): ActiveQuery
+    public function getProduct(): ActiveQuery
     {
-        return $this->hasOne(BaseProductCategory::class, ['id' => 'category_id']);
+        return $this->hasMany(BaseProduct::class, ['product_id' => 'id']);
     }
 }
