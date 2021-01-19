@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Product */
+/* @var $model app\models\ProductTag */
 
-$this->title = 'Create Product';
-$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
+$this->title = 'Create Product Tag';
+$this->params['breadcrumbs'][] = ['label' => 'Product Tags', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="product-create">
+<div class="product-tag-create">
 
     <?php echo $this->render('_form', [
         'model' => $model,

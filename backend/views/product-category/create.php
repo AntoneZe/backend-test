@@ -1,20 +1,18 @@
 <?php
 
-use common\models\Product;
-use backend\components\View;
+use yii\helpers\Html;
 
-/**
- * @var $this View
- * @var $model Product
- */
 
-$this->title = Yii::t('backend', 'Create Product Category');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Product Category'), 'url' => ['index']];
+/* @var $this yii\web\View */
+/* @var $model app\models\ProductCategory */
+
+$this->title = 'Create Product Category';
+$this->params['breadcrumbs'][] = ['label' => 'Product Categories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="ProductCategory-create">
+<div class="product-category-create">
 
-  <?php echo $this->render('_form', [
+    <?php echo $this->render('_form', [
         'model' => $model,
     ]) ?>
 

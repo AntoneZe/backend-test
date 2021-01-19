@@ -1,20 +1,18 @@
 <?php
 
-use common\models\Product;
-use backend\components\View;
+use yii\helpers\Html;
 
-/**
- * @var $this View
- * @var $model ProductCategory
- */
+/* @var $this yii\web\View */
+/* @var $model app\models\ProductCategory */
 
-$this->title = Yii::t('backend', 'Update Product Category') . ': ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Product Category'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Update')];
+$this->title = 'Update Product Category: ' . ' ' . $model->title;
+$this->params['breadcrumbs'][] = ['label' => 'Product Categories', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="ProductCategory-update">
+<div class="product-category-update">
 
-  <?php echo $this->render('_form', [
+    <?php echo $this->render('_form', [
         'model' => $model,
     ]) ?>
 

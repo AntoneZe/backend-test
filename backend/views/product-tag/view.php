@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\ProductCategory */
+/* @var $model app\models\ProductTag */
 
-$this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Product Categories', 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Product Tags', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="product-category-view">
+<div class="product-tag-view">
 
     <p>
         <?php echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -27,10 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'title',
-            'is_published:boolean',
-            'created_at',
-            'updated_at',
+            'product_id',
+            'tag_id',
         ],
     ]) ?>
 

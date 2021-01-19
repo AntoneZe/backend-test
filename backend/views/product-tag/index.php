@@ -6,14 +6,14 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Product Categories';
+$this->title = 'Product Tags';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="product-category-index">
+<div class="product-tag-index">
 
 
     <p>
-        <?php echo Html::a('Create Product Category', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php echo Html::a('Create Product Tag', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php echo GridView::widget([
@@ -22,10 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'title',
-            'is_published:boolean',
-            'created_at',
-            'updated_at',
+            'product_id',
+            'tag_id',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

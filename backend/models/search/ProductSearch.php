@@ -1,36 +1,33 @@
 <?php
 
-namespace backend\models\search;
+namespace app\models\search;
 
-use common\models\Product;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use Yii;
-
+use app\models\Product;
 
 /**
- * ProductSearch represents the model behind the search form about `common\models\Product`.
+ * ProductSearch represents the model behind the search form about `app\models\Product`.
  */
 class ProductSearch extends Product
 {
-
     /**
      * @inheritdoc
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['created_at', 'updated_at'], 'filter', 'filter' => 'strtotime', 'skipOnEmpty' => true],
-            [['created_at', 'updated_at'], 'default', 'value' => null],
-            [['title', 'categoryName'], 'safe'],
+            [['id', 'category_id', 'created_at', 'updated_at'], 'integer'],
+            [['title'], 'safe'],
+            [['is_published'], 'boolean'],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function scenarios(): array
+    public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
@@ -38,13 +35,15 @@ class ProductSearch extends Product
 
     /**
      * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
      * @return ActiveDataProvider
      */
-    public function search($params): ActiveDataProvider
+    public function search($params)
     {
         $query = Product::find();
-        // ->with(['productCategory']);
-        
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -55,19 +54,13 @@ class ProductSearch extends Product
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'category_id' => $this->category_id
+            'category_id' => $this->category_id,
+            'is_published' => $this->is_published,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ]);
 
-        if ($this->created_at !== null) {
-            $query->andFilterWhere(['between', 'created_at', $this->created_at, $this->created_at + 3600 * 24]);
-        }
-
-        if ($this->updated_at !== null) {
-            $query->andFilterWhere(['between', 'updated_at', $this->updated_at, $this->updated_at + 3600 * 24]);
-        }
-
-
-        $query->andFilterWhere(['like', 'title', $this->title]);
+        $query->andFilterWhere(['ilike', 'title', $this->title]);
 
         return $dataProvider;
     }

@@ -143,11 +143,17 @@ $bundle = BackendAsset::register($this);
                         'options' => ['class' => 'header'],
                     ],
                     [
-                      'label' => Yii::t('backend', 'Product Category'),
+                      'label' => Yii::t('backend', 'Категория продукта'),
                       'url' => ['/product-category/index'],
                       'icon' => '<i class="fa fa-list"></i>',
                       'active' => (Yii::$app->controller->id === 'product-category'),
-                  ],
+                    ],
+                    [
+                    'label' => Yii::t('backend', 'Тэги'),
+                    'url' => ['/tag/index'],
+                    'icon' => '<i class="fa fa-list"></i>',
+                    'active' => (Yii::$app->controller->id === 'tag'),
+                    ],
                     [
                         'label' => Yii::t('backend', 'Product'),
                         'url' => ['/product/index'],
