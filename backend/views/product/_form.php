@@ -22,8 +22,8 @@ use kartik\select2\Select2;
 
   <?php echo $form->field($model, 'is_published')->checkbox() ?>
 
-  <?= $form->field($model, 'tagsIds')->widget(Select2::className(), [
-   'data'=>$model->tagData,
+  <?= $form->field($model, 'productTagsIdList')->widget(Select2::className(), [
+   'data'=>$model->tagsList,
    'options' => ['multiple' => true]
   ]);?>
 

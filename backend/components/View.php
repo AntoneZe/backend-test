@@ -48,7 +48,7 @@ class View extends \yii\web\View
 
     public function btnClose()
     {
-        return Html::a(Yii::t('app', 'Закрыть'), Url::previous(),
+        return Html::a(Yii::t('app', 'Закрытьtem'), Url::previous(),
             ['class' => 'btn btn-danger btn-close']);
     }
 

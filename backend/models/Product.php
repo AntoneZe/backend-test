@@ -20,7 +20,7 @@ use yii\helpers\ArrayHelper;
  */
 class Product extends \yii\db\ActiveRecord
 {
-    public $productTagsIds = [];
+    public $productTagsIdList = [];
 
     /**
      * {@inheritdoc}
@@ -41,6 +41,7 @@ class Product extends \yii\db\ActiveRecord
             [['category_id', 'created_at', 'updated_at'], 'integer'],
             [['is_published'], 'boolean'],
             [['title'], 'string', 'max' => 255],
+            [['tags_list'], 'safe'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductCategory::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];
     }
@@ -68,65 +69,55 @@ class Product extends \yii\db\ActiveRecord
         return $this->hasOne(ProductCategory::className(), ['id' => 'category_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProductTags()
-    {
-        return $this->hasMany(ProductTag::className(), ['product_id' => 'id']);
-    }
-
     public function getTags()
     {
-        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->via('productTag');
+        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
+            ->viaTable('product_tag', ['product_id' => 'id']);
     }
 
-    public function getTagData()
+    public function getSelectedTags()
     {
-    $data = Tag::find()->asArray()->all();
-    return ArrayHelper::map($data, 'id', 'title');
+    $selectedIds = $this->getTags()->select('id')->asArray()->all();
+    
+    return ArrayHelper::getColumn($selectedIds, 'id');
     }
 
-    public function getTagsIds()
+    public function getSelectedTagsTest()
+    {    
+    return ArrayHelper::getColumn($this->productTagsIdList, 'id');
+    }
+
+    public function getProductTagsIdList()
     {
-      $this->productTagsIds = ArrayHelper::getColumn(
-        $this->getProductTags()->asArray()->all(),
-        'tag_id'
-      );
-      return $this->productTagsIds;
+      $this->productTagsIdList = Tag::find();
+
+      return $this->productTagsIdList;
+    }    
+    
+    public function getTagsList()
+    {
+        $data = Tag::find()->asArray()->all();
+        return ArrayHelper::map($data, 'id', 'title');
     }
 
-    public function afterSave($insert, $changedAttributes)
- {
-   $actualTags = [];
-   $tagExists = 0;
+    public function saveTags($tags)
+    {
+        if(is_array($tags))
+        {
+            // $this->clearCurrentTags();    
 
-   if (($actualTags = ProductTag::find()
-	->andWhere("product_id = $this->id")
-	->asArray()
-	->all()) !== null) {
-      $actualTags = ArrayHelper::getColumn($actualTags, 'tag_id');
-      $tagExists = 1; 
-   }
+            foreach($tags as $tag_id) 
+            {
+                $tag = Tag::findOne($tag_id);
+                $this->link('tags', $tag);
+            }
+        }
+    }
 
-   if (!empty($this->despIds)) { //save the relations
-      foreach ($this->despIds as $id) {
-         $actualTags = array_diff($actualTags, [$id]); //remove remaining authors from array
-	 $r = new ProductTag();
-	 $r->product_id = $this->id;
-	 $r->tag_id = $id;
-	 $r->save();
-	}
-   }
-
-   if ($tagExists == 1) { //delete authors tha does not belong anymore to this book
-	foreach ($actualTags as $remove) {
-	  $r = ProductTag::findOne(['tag_id' => $remove, 'product_id' => $this->id]);
-	  $r->delete();
-	}
-   }
-
-   parent::afterSave($insert, $changedAttributes); //don't forget this
-}
+    
+    public function clearCurrentTags($tags)
+    {
+            ProductTag::deleteAll(['product_id'=>$this->id]);
+    }
 
 }

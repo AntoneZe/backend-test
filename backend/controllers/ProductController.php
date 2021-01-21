@@ -5,10 +5,12 @@ namespace backend\controllers;
 use Yii;
 use app\models\Product;
 use app\models\ProductTag;
+use app\models\Tag;
 use app\models\search\ProductSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -37,10 +39,16 @@ class ProductController extends Controller
     {
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        // $product = $this->findModel($id);
+        // $selectedTags = $product->getSelectedTags();
+        // $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'title');
+        // var_dump($tags);
+        // die;
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'test' => "qwe"
         ]);
     }
 
@@ -51,6 +59,9 @@ class ProductController extends Controller
      */
     public function actionView($id)
     {
+
+        $product = $this->findModel($id);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -64,13 +75,21 @@ class ProductController extends Controller
     public function actionCreate()
     {
         $model = new Product();
-
+        $selectedTags =  $model->getSelectedTagsTest();
+        $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'title');
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $tags = Yii::$app->request->post('title');
+            // $model->saveTags($tags);
+
+            var_dump($tags);
+            die;
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            
             return $this->render('create', [
                 'model' => $model,
+                // 'product' => $product,
             ]);
         }
     }
@@ -84,12 +103,14 @@ class ProductController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        // $selectedTags =  $model->getSelectedTags();
+        // $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'title');
         
-        $model->tagsIds = $model->getTagsIds();
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -109,14 +130,6 @@ class ProductController extends Controller
         return $this->redirect(['index']);
     }
 
-    // public function actionSetTag($id) {
-    //     $product = $this->findModel($id);
-    //     // var_dump($product->title);
-    //     $selectedTags = $product->getSelectionProductTags();
-    //     // $tag = ProductTag::findOne(1);
-    //      var_dump($selectedTags);
-    // }
-    
 
     /**
      * Finds the Product model based on its primary key value.
@@ -132,6 +145,28 @@ class ProductController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+
+    public function actionSetTags($id)
+    {
+        $product = $this->findModel($id);
+        $selectedTags = $product->getSelectedTags();
+        $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'title');
+
+        if(Yii::$app->request->isPost)
+        {
+            $tags = Yii::$app->request->post('tags');
+            $product->saveTags($tags);
+
+            return $this->redirect(['view', 'id'=>$product->id]);
+        }
+        
+        return $this->render('tags', [
+            'product' => $product,
+            'selectedTags' => $selectedTags,
+            'tags'=> $tags,
+        ]);
     }
 
 }
