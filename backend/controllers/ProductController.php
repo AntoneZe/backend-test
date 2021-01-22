@@ -39,11 +39,6 @@ class ProductController extends Controller
     {
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // $product = $this->findModel($id);
-        // $selectedTags = $product->getSelectedTags();
-        // $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'title');
-        // var_dump($tags);
-        // die;
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -75,21 +70,21 @@ class ProductController extends Controller
     public function actionCreate()
     {
         $model = new Product();
-        $selectedTags =  $model->getSelectedTagsTest();
-        $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'title');
-        
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $tags = Yii::$app->request->post('title');
-            // $model->saveTags($tags);
 
-            var_dump($tags);
-            die;
+        $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'title');
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $product = $this->findModel($model->id);
+
+            $tags =  ArrayHelper::getValue(Yii::$app->request->post(), 'Product');
+            $parsedTags = ArrayHelper::getValue($tags, 'productTagsIdList');
+            $product->saveTags($parsedTags);
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            
+
             return $this->render('create', [
                 'model' => $model,
-                // 'product' => $product,
             ]);
         }
     }
@@ -105,12 +100,12 @@ class ProductController extends Controller
         $model = $this->findModel($id);
         // $selectedTags =  $model->getSelectedTags();
         // $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'title');
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            
+
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -154,19 +149,19 @@ class ProductController extends Controller
         $selectedTags = $product->getSelectedTags();
         $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'title');
 
-        if(Yii::$app->request->isPost)
-        {
+        if (Yii::$app->request->isPost) {
             $tags = Yii::$app->request->post('tags');
+            var_dump($tags);
+            die;
             $product->saveTags($tags);
 
-            return $this->redirect(['view', 'id'=>$product->id]);
+            return $this->redirect(['view', 'id' => $product->id]);
         }
-        
+
         return $this->render('tags', [
             'product' => $product,
             'selectedTags' => $selectedTags,
-            'tags'=> $tags,
+            'tags' => $tags,
         ]);
     }
-
 }

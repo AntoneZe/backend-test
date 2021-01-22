@@ -75,25 +75,41 @@ class Product extends \yii\db\ActiveRecord
             ->viaTable('product_tag', ['product_id' => 'id']);
     }
 
-    public function getSelectedTags()
+    public function getTest()
     {
-    $selectedIds = $this->getTags()->select('id')->asArray()->all();
-    
-    return ArrayHelper::getColumn($selectedIds, 'id');
+        return "test";
     }
 
-    public function getSelectedTagsTest()
-    {    
-    return ArrayHelper::getColumn($this->productTagsIdList, 'id');
+    public function getSelectedTags()
+    {
+        $selectedIds = $this->getTags()->select('id')->asArray()->all();
+
+        return ArrayHelper::getColumn($selectedIds, 'id');
+    }
+
+    public function getProjectTagList()
+    {
+        $selectedIds = $this->getTags()->select('id')->asArray()->all();
+        $items = [];
+
+        foreach ($selectedIds as $tagId) {
+            $tag = Tag::findOne($tagId);
+
+            $items[] = $tag->title;
+        }
+
+        $tag_list = implode(', ', $items);
+
+        return $tag_list;
     }
 
     public function getProductTagsIdList()
     {
-      $this->productTagsIdList = Tag::find();
+        $this->productTagsIdList = Tag::find();
 
-      return $this->productTagsIdList;
-    }    
-    
+        return $this->productTagsIdList;
+    }
+
     public function getTagsList()
     {
         $data = Tag::find()->asArray()->all();
@@ -102,22 +118,19 @@ class Product extends \yii\db\ActiveRecord
 
     public function saveTags($tags)
     {
-        if(is_array($tags))
-        {
-            // $this->clearCurrentTags();    
+        if (is_array($tags)) {
+            $this->clearCurrentTags();
 
-            foreach($tags as $tag_id) 
-            {
+            foreach ($tags as $tag_id) {
                 $tag = Tag::findOne($tag_id);
                 $this->link('tags', $tag);
             }
         }
     }
 
-    
-    public function clearCurrentTags($tags)
-    {
-            ProductTag::deleteAll(['product_id'=>$this->id]);
-    }
 
+    public function clearCurrentTags()
+    {
+        ProductTag::deleteAll(['product_id' => $this->id]);
+    }
 }
