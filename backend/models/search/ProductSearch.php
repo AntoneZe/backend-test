@@ -15,7 +15,7 @@ class ProductSearch extends Product
 
     public $categoryTitle;
 
-    protected function addCondition($query, $attribute, $partialMatch = false)
+    protected function addCondition($query, $attribute, $partialMatch = false, $specialCondition = false)
 {
     if (($pos = strrpos($attribute, '.')) !== false) {
         $modelAttribute = substr($attribute, $pos + 1);
@@ -35,6 +35,11 @@ class ProductSearch extends Product
     } else {
         $query->andWhere([$attribute => $value]);
     }
+
+    // if ($specialCondition) {
+    //     // $query->andWhere(['like', $attribute, $value]);
+    //     $query->andFilterWhere(['between', 'product.created_at', $this->created_at, $this->created_at + 3600 * 24]);
+    // }
 }
 
     /**
@@ -75,9 +80,6 @@ class ProductSearch extends Product
             'query' => $query,
         ]);
 
-        // var_dump( $query->joinWith(['category']));
-        // die;
-
         $dataProvider->setSort([
             'attributes' => [
                 'id',
@@ -104,34 +106,17 @@ class ProductSearch extends Product
         $this->addCondition($query, 'is_published');
 
         if ($this->created_at !== null) {
-            $query->andFilterWhere(['between', 'created_at', $this->created_at, $this->created_at + 3600 * 24]);
+            $query->andFilterWhere(['between', 'product.created_at', $this->created_at, $this->created_at + 3600 * 24]);
         }
 
         if ($this->updated_at !== null) {
-            $query->andFilterWhere(['between', 'updated_at', $this->updated_at, $this->updated_at + 3600 * 24]);
+            $query->andFilterWhere(['between', 'product.updated_at', $this->updated_at, $this->updated_at + 3600 * 24]);
         }
         
-        // $this->addCondition($query, 'created_at');
-        // $this->addCondition($query, 'updated_at', true);
-        // $this->addCondition($query, 'last_name', true);
-        // $this->addCondition($query, 'country_id');
-
-        // $query->andFilterWhere([
-        //     'id' => $this->id,
-        //     // 'category_id' => $this->category_id,
-        //     'is_published' => $this->is_published,
-        //     'created_at' => $this->created_at,
-        //     'updated_at' => $this->updated_at,
-        // ]);
         $query->joinWith(['category' => function ($q) {
-            var_dump($this->categoryTitle);
-            // var_dump($q->where('tbl_category.title LIKE "%' . $this->categoryTitle . '%"'));
-            // die;
             $q->andFilterWhere(['like', 'product_category.title', $this->categoryTitle]);
-            // $q->where('category.title LIKE "%' . $this->categoryTitle . '%"');
         }]);
 
-        $query->andFilterWhere(['ilike', 'title', $this->title]);
 
         return $dataProvider;
     }
