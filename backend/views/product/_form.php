@@ -22,14 +22,11 @@ use kartik\select2\Select2;
 
   <?php echo $form->field($model, 'is_published')->checkbox() ?>
 
+
   <?= $form->field($model, 'productTagsIdList')->widget(Select2::className(), [
    'data'=> $model->tagsList,
-   'options' => ['multiple' => true, 'value' => $selectedTags]
+   'options' => ['multiple' => true, 'value' => $model->isNewRecord ? "" : $selectedTags]
   ]);?>
-
-  <?php echo $form->field($model, 'created_at')->textInput() ?>
-
-  <?php echo $form->field($model, 'updated_at')->textInput() ?>
 
   <div class="form-group">
     <?php echo Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

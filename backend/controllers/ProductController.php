@@ -55,10 +55,7 @@ class ProductController extends Controller
     {
 
         $product = $this->findModel($id);
-        $selectedTags =  $product->getSelectedTags();
-
-        // var_dump($selectedTags);
-        // die;
+        $selectedTags =  $product->getProjectTagList();
 
         return $this->render('view', [
             'model' => $this->findModel($id),

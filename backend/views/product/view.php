@@ -18,10 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php echo Html::a('Set Tags', ['set-tags', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
   </p>
 
-  <?php 
-  // var_dump($selectedTags); die;
-  ?>
-
   <?php echo DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -30,24 +26,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'category_id',
             [
               'attribute' => 'Tag list',
-              'value' => function($model) {
-                $items = [];
-
-                foreach ($model->selectedTags as $tagId) {
-                    $tag = Tag::findOne($tagId);
-        
-                    $items[] = $tag->title;
-                }
-        
-                $tag_list = implode(', ', $items);
-        
-                return $tag_list;
-                
-              },
+              'value' => $selectedTags,
             ],
             'is_published:boolean',
-            'created_at',
-            'updated_at',
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 

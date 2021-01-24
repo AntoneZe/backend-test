@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "product".
@@ -21,6 +22,21 @@ use yii\helpers\ArrayHelper;
 class Product extends \yii\db\ActiveRecord
 {
     public $productTagsIdList = [];
+
+
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    \yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+            ],
+        ];
+    }   
 
     /**
      * {@inheritdoc}
@@ -75,22 +91,6 @@ class Product extends \yii\db\ActiveRecord
             ->viaTable('product_tag', ['product_id' => 'id']);
     }
 
-    public function getTest()
-    {
-        $selectedIds = $this->getTags()->select('id')->asArray()->all();
-        $items = [];
-
-        foreach ($selectedIds as $tagId) {
-            $tag = Tag::findOne($tagId);
-
-            $items[] = $tag->title;
-        }
-
-        $tag_list = implode(', ', $items);
-
-        return $tag_list;
-    }
-
     public function getSelectedTags()
     {
         $selectedIds = $this->getTags()->select('id')->asArray()->all();
@@ -138,7 +138,6 @@ class Product extends \yii\db\ActiveRecord
             }
         }
     }
-
 
     public function clearCurrentTags()
     {
