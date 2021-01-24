@@ -98,16 +98,21 @@ class ProductController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        // $selectedTags =  $model->getSelectedTags();
-        // $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'title');
+        $selectedTags =  $model->getSelectedTags();
+        $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'title');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $tags =  ArrayHelper::getValue(Yii::$app->request->post(), 'Product');
+            $parsedTags = ArrayHelper::getValue($tags, 'productTagsIdList');
+            $model->saveTags($parsedTags);
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
 
             return $this->render('update', [
                 'model' => $model,
+                'selectedTags' => $selectedTags,
+                'tags' => $tags,
             ]);
         }
     }
@@ -151,8 +156,6 @@ class ProductController extends Controller
 
         if (Yii::$app->request->isPost) {
             $tags = Yii::$app->request->post('tags');
-            var_dump($tags);
-            die;
             $product->saveTags($tags);
 
             return $this->redirect(['view', 'id' => $product->id]);
