@@ -46,10 +46,10 @@ class ProductCategory extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'is_published' => 'Is Published',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'title' => 'Название',
+            'is_published' => 'Статус публикации',
+            'created_at' => 'Время создания',
+            'updated_at' => 'Время обнволения',
         ];
     }
 

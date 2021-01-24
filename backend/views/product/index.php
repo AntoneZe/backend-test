@@ -10,8 +10,7 @@ use yii\web\JsExpression;
 /* @var $searchModel app\models\ProductSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Products';
-// $this->title = 'Products';
+$this->title = 'Продукты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-index">
@@ -20,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
   ?>
 
   <p>
-    <?php echo Html::a('Create Product', ['create'], ['class' => 'btn btn-success']) ?>
+    <?php echo Html::a('Создать', ['create'], ['class' => 'btn btn-success']) ?>
   </p>
 
   <?php echo GridView::widget([

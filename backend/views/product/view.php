@@ -8,14 +8,13 @@ use app\models\Tag;
 /* @var $model app\models\Product */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Продукты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-view">
 
   <p>
-    <?php echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-    <?php echo Html::a('Set Tags', ['set-tags', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
+    <?php echo Html::a('Обновить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
   </p>
 
   <?php echo DetailView::widget([
@@ -23,9 +22,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'title',
-            'category_id',
+            'categoryTitle',
             [
-              'attribute' => 'Tag list',
+              'attribute' => 'productTagList',
               'value' => $selectedTags,
             ],
             'is_published:boolean',

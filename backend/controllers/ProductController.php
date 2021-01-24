@@ -78,7 +78,8 @@ class ProductController extends Controller
             $product = $this->findModel($model->id);
 
             $tags =  ArrayHelper::getValue(Yii::$app->request->post(), 'Product');
-            $parsedTags = ArrayHelper::getValue($tags, 'productTagsIdList');
+            $parsedTags = ArrayHelper::getValue($tags, 'productTagsList');
+            
             $product->saveTags($parsedTags);
 
             return $this->redirect(['view', 'id' => $model->id]);
@@ -104,7 +105,8 @@ class ProductController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $tags =  ArrayHelper::getValue(Yii::$app->request->post(), 'Product');
-            $parsedTags = ArrayHelper::getValue($tags, 'productTagsIdList');
+            $parsedTags = ArrayHelper::getValue($tags, 'productTagsList');
+
             $model->saveTags($parsedTags);
 
             return $this->redirect(['view', 'id' => $model->id]);

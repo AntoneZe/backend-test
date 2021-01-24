@@ -21,7 +21,7 @@ use yii\behaviors\TimestampBehavior;
  */
 class Product extends \yii\db\ActiveRecord
 {
-    public $productTagsIdList = [];
+    public $productTagsList = [];
 
     public function behaviors()
     {
@@ -69,8 +69,10 @@ class Product extends \yii\db\ActiveRecord
             'id' => 'ID',
             'title' => 'Название',
             'fullName' => 'Full Name',
+            'category_id' => 'ID категории',
             'categoryTitle' => 'Название категории',
             'productTagList' => 'Список тегов',
+            'productTagsList' => 'Список тегов',
             'is_published' => 'Статус публикации',
             'created_at' => 'Время создания',
             'updated_at' => 'Время обновления',
@@ -122,11 +124,11 @@ class Product extends \yii\db\ActiveRecord
         return $tag_list;
     }
 
-    public function getProductTagsIdList()
+    public function getProductTagsList()
     {
-        $this->productTagsIdList = Tag::find();
+        $this->productTagsList = Tag::find();
 
-        return $this->productTagsIdList;
+        return $this->productTagsList;
     }
 
     public function getTagsList()
