@@ -77,7 +77,18 @@ class Product extends \yii\db\ActiveRecord
 
     public function getTest()
     {
-        return "test";
+        $selectedIds = $this->getTags()->select('id')->asArray()->all();
+        $items = [];
+
+        foreach ($selectedIds as $tagId) {
+            $tag = Tag::findOne($tagId);
+
+            $items[] = $tag->title;
+        }
+
+        $tag_list = implode(', ', $items);
+
+        return $tag_list;
     }
 
     public function getSelectedTags()

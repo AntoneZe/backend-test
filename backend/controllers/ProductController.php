@@ -43,7 +43,6 @@ class ProductController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'test' => "qwe"
         ]);
     }
 
@@ -56,9 +55,14 @@ class ProductController extends Controller
     {
 
         $product = $this->findModel($id);
+        $selectedTags =  $product->getSelectedTags();
+
+        // var_dump($selectedTags);
+        // die;
 
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'selectedTags' => $selectedTags,
         ]);
     }
 
