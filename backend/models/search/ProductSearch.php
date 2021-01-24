@@ -14,8 +14,9 @@ class ProductSearch extends Product
 {
 
     public $categoryTitle;
+    // public $productTagList;
 
-    protected function addCondition($query, $attribute, $partialMatch = false, $specialCondition = false)
+    protected function addCondition($query, $attribute, $partialMatch = false)
 {
     if (($pos = strrpos($attribute, '.')) !== false) {
         $modelAttribute = substr($attribute, $pos + 1);
@@ -35,11 +36,6 @@ class ProductSearch extends Product
     } else {
         $query->andWhere([$attribute => $value]);
     }
-
-    // if ($specialCondition) {
-    //     // $query->andWhere(['like', $attribute, $value]);
-    //     $query->andFilterWhere(['between', 'product.created_at', $this->created_at, $this->created_at + 3600 * 24]);
-    // }
 }
 
     /**
@@ -52,6 +48,7 @@ class ProductSearch extends Product
             [['created_at', 'updated_at'], 'filter', 'filter' => 'strtotime', 'skipOnEmpty' => true],
             [['created_at', 'updated_at'], 'default', 'value' => null],
             [['title', 'categoryTitle'], 'safe'],
+            // [['title', 'categoryTitle', 'productTagList'], 'safe'],
             [['is_published'], 'boolean'],
         ];
     }
@@ -85,6 +82,11 @@ class ProductSearch extends Product
                 'id',
                 'title',
                 'is_published',
+                // 'productTagList' => [
+                //     'asc' => ['product_tag.title' => SORT_ASC],
+                //     'desc' => ['product_tag.title' => SORT_DESC],
+                //     'label' => 'Список тегов'
+                // ],
                 'created_at',
                 'updated_at',
                 'categoryTitle' => [
@@ -97,6 +99,7 @@ class ProductSearch extends Product
 
         if (!($this->load($params) && $this->validate())) {
             $query->joinWith(['category']);
+            $query->joinWith(['tags']);
 
             return $dataProvider;
         }
@@ -112,11 +115,10 @@ class ProductSearch extends Product
         if ($this->updated_at !== null) {
             $query->andFilterWhere(['between', 'product.updated_at', $this->updated_at, $this->updated_at + 3600 * 24]);
         }
-        
+
         $query->joinWith(['category' => function ($q) {
             $q->andFilterWhere(['like', 'product_category.title', $this->categoryTitle]);
         }]);
-
 
         return $dataProvider;
     }

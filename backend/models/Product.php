@@ -68,10 +68,9 @@ class Product extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Название',
-            // 'category_id' => 'ID категории',
             'fullName' => 'Full Name',
             'categoryTitle' => 'Название категории',
-            'tag_list' => 'Список тегов',
+            'productTagList' => 'Список тегов',
             'is_published' => 'Статус публикации',
             'created_at' => 'Время создания',
             'updated_at' => 'Время обновления',
@@ -107,7 +106,7 @@ class Product extends \yii\db\ActiveRecord
         return ArrayHelper::getColumn($selectedIds, 'id');
     }
 
-    public function getProjectTagList()
+    public function getProductTagList()
     {
         $selectedIds = $this->getTags()->select('id')->asArray()->all();
         $items = [];

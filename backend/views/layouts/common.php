@@ -149,7 +149,7 @@ $bundle = BackendAsset::register($this);
                       'active' => (Yii::$app->controller->id === 'product-category'),
                     ],
                     [
-                    'label' => Yii::t('backend', 'Тэги'),
+                    'label' => Yii::t('backend', 'Теги'),
                     'url' => ['/tag/index'],
                     'icon' => '<i class="fa fa-list"></i>',
                     'active' => (Yii::$app->controller->id === 'tag'),

@@ -1,6 +1,9 @@
 <?php
 
 use common\models\User;
+use app\models\Tag;
+use app\models\Product;
+use app\models\ProductCategory;
 use yii\db\Migration;
 
 class m150725_192740_seed_data extends Migration
@@ -12,7 +15,6 @@ class m150725_192740_seed_data extends Migration
     public function safeUp()
     {
         $this->insert('{{%user}}', [
-            'id' => 1,
             'username' => 'webmaster',
             'email' => 'webmaster@example.com',
             'password_hash' => Yii::$app->getSecurity()->generatePasswordHash('webmaster'),
@@ -22,8 +24,8 @@ class m150725_192740_seed_data extends Migration
             'created_at' => time(),
             'updated_at' => time()
         ]);
+        
         $this->insert('{{%user}}', [
-            'id' => 2,
             'username' => 'manager',
             'email' => 'manager@example.com',
             'password_hash' => Yii::$app->getSecurity()->generatePasswordHash('manager'),
@@ -33,8 +35,8 @@ class m150725_192740_seed_data extends Migration
             'created_at' => time(),
             'updated_at' => time()
         ]);
+
         $this->insert('{{%user}}', [
-            'id' => 3,
             'username' => 'user',
             'email' => 'user@example.com',
             'password_hash' => Yii::$app->getSecurity()->generatePasswordHash('user'),
@@ -44,6 +46,65 @@ class m150725_192740_seed_data extends Migration
             'created_at' => time(),
             'updated_at' => time()
         ]);
+        
+        $this->insert('{{%tag}}', [
+            'title' => 'Tag 1',
+        ]);
+        
+        $this->insert('{{%tag}}', [
+            'title' => 'Tag 2',
+        ]);
+
+        $this->insert('{{%tag}}', [
+            'title' => 'Tag 3',
+        ]);
+
+        $this->insert('{{%product_category}}', [
+            'title' => 'Product category 1',
+        ]);
+        
+        $this->insert('{{%product_category}}', [
+            'title' => 'Product category 2',
+        ]);
+
+        $this->insert('{{%product_category}}', [
+            'title' => 'Product category 3',
+        ]);
+
+        $this->insert('{{%product}}', [
+            'title' => 'Product 1',
+            'category_id' => 1,
+        ]);
+        
+        $this->insert('{{%product}}', [
+            'title' => 'Product 2',
+            'category_id' => 2,
+        ]);
+
+        $this->insert('{{%product}}', [
+            'title' => 'Product 3',
+            'category_id' => 3,
+        ]);
+
+        $this->insert('{{%product_tag}}', [
+            'product_id' => 1,
+            'tag_id' => 1,
+        ]);
+        
+        $this->insert('{{%product_tag}}', [
+            'product_id' => 2,
+            'tag_id' => 2,
+        ]);
+
+        $this->insert('{{%product_tag}}', [
+            'product_id' => 3,
+            'tag_id' => 3,
+        ]);        
+        
+        $this->insert('{{%product_tag}}', [
+            'product_id' => 3,
+            'tag_id' => 2,
+        ]);
 
         $this->insert('{{%user_profile}}', [
             'user_id' => 1,
@@ -51,10 +112,12 @@ class m150725_192740_seed_data extends Migration
             'firstname' => 'webmaster',
             'lastname' => ''
         ]);
+
         $this->insert('{{%user_profile}}', [
             'user_id' => 2,
             'locale' => Yii::$app->sourceLanguage
         ]);
+
         $this->insert('{{%user_profile}}', [
             'user_id' => 3,
             'locale' => Yii::$app->sourceLanguage
@@ -109,6 +172,22 @@ class m150725_192740_seed_data extends Migration
 
         $this->delete('{{%user_profile}}', [
             'user_id' => [1, 2, 3]
+        ]);
+        
+        $this->delete('{{%tag}}', [
+            'tag_id' => [1, 2, 3]
+        ]);
+
+        $this->delete('{{%product_category}}', [
+            'product_category_id' => [1, 2, 3]
+        ]);
+
+        $this->delete('{{%product}}', [
+            'product_id' => [1, 2, 3]
+        ]);       
+        
+        $this->delete('{{%product_tag}}', [
+            'product_tag_id' => [1, 2, 3, 4]
         ]);
 
         $this->delete('{{%user}}', [
