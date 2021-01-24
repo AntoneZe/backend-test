@@ -31,11 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
       'id',
       'title',
-      'category_id',
+      // 'category_id',
       [
-        'attribute' => 'Cписок тегов',
+        'attribute' => 'tag_list',
         'value' => 'projectTagList',
       ],
+      'categoryTitle',
       'is_published:boolean',
       [
         'attribute' => 'created_at',

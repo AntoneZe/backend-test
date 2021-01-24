@@ -23,8 +23,6 @@ class Product extends \yii\db\ActiveRecord
 {
     public $productTagsIdList = [];
 
-
-
     public function behaviors()
     {
         return [
@@ -69,11 +67,14 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'category_id' => 'Category ID',
-            'is_published' => 'Is Published',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'title' => 'Название',
+            // 'category_id' => 'ID категории',
+            'fullName' => 'Full Name',
+            'categoryTitle' => 'Название категории',
+            'tag_list' => 'Список тегов',
+            'is_published' => 'Статус публикации',
+            'created_at' => 'Время создания',
+            'updated_at' => 'Время обновления',
         ];
     }
 
@@ -83,6 +84,14 @@ class Product extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(ProductCategory::className(), ['id' => 'category_id']);
+    }
+
+        /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategoryTitle()
+    {   
+        return $this->category->title;
     }
 
     public function getTags()
