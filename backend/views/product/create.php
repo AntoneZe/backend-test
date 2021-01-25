@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-create">
 
-  <?php echo $this->render('_form', [
+    <?php echo $this->render('_form', [
         'model' => $model,
     ]) ?>
 

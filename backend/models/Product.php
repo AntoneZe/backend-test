@@ -34,7 +34,7 @@ class Product extends \yii\db\ActiveRecord
                 ],
             ],
         ];
-    }   
+    }
 
     /**
      * {@inheritdoc}
@@ -87,11 +87,11 @@ class Product extends \yii\db\ActiveRecord
         return $this->hasOne(ProductCategory::className(), ['id' => 'category_id']);
     }
 
-        /**
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getCategoryTitle()
-    {   
+    {
         return $this->category->title;
     }
 

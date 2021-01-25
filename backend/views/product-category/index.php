@@ -12,11 +12,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="product-category-index">
 
 
-  <p>
-    <?php echo Html::a('Создать', ['create'], ['class' => 'btn btn-success']) ?>
-  </p>
+    <p>
+        <?php echo Html::a('Создать', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
 
-  <?php echo GridView::widget([
+    <?php echo GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],

@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="product-update">
 
-  <?php echo $this->render('_form', [
+    <?php echo $this->render('_form', [
         'model' => $model,
         'selectedTags' => $selectedTags
     ]) ?>

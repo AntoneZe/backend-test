@@ -55,7 +55,7 @@ class ProductController extends Controller
     {
 
         $product = $this->findModel($id);
-        $selectedTags =  $product->getProductTagList();
+        $selectedTags = $product->getProductTagList();
 
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -77,9 +77,9 @@ class ProductController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $product = $this->findModel($model->id);
 
-            $tags =  ArrayHelper::getValue(Yii::$app->request->post(), 'Product');
+            $tags = ArrayHelper::getValue(Yii::$app->request->post(), 'Product');
             $parsedTags = ArrayHelper::getValue($tags, 'productTagsList');
-            
+
             $product->saveTags($parsedTags);
 
             return $this->redirect(['view', 'id' => $model->id]);
@@ -100,11 +100,11 @@ class ProductController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $selectedTags =  $model->getSelectedTags();
+        $selectedTags = $model->getSelectedTags();
         $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'title');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $tags =  ArrayHelper::getValue(Yii::$app->request->post(), 'Product');
+            $tags = ArrayHelper::getValue(Yii::$app->request->post(), 'Product');
             $parsedTags = ArrayHelper::getValue($tags, 'productTagsList');
 
             $model->saveTags($parsedTags);
