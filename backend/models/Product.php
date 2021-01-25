@@ -119,9 +119,9 @@ class Product extends \yii\db\ActiveRecord
             $items[] = $tag->title;
         }
 
-        $tag_list = implode(', ', $items);
+        $tagList = implode(', ', $items);
 
-        return $tag_list;
+        return $tagList;
     }
 
     public function getProductTagsList()
