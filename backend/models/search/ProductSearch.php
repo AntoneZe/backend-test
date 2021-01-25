@@ -14,29 +14,29 @@ class ProductSearch extends Product
 {
 
     public $categoryTitle;
-    // public $productTagList;
+    public $productTagList;
 
     protected function addCondition($query, $attribute, $partialMatch = false)
-{
-    if (($pos = strrpos($attribute, '.')) !== false) {
-        $modelAttribute = substr($attribute, $pos + 1);
-    } else {
-        $modelAttribute = $attribute;
-    }
+    {
+        if (($pos = strrpos($attribute, '.')) !== false) {
+            $modelAttribute = substr($attribute, $pos + 1);
+        } else {
+            $modelAttribute = $attribute;
+        }
 
-    $value = $this->$modelAttribute;
-    if (trim($value) === '') {
-        return;
-    }
+        $value = $this->$modelAttribute;
+        if (trim($value) === '') {
+            return;
+        }
 
-    $attribute = "product.$attribute";
+        $attribute = "product.$attribute";
 
-    if ($partialMatch) {
-        $query->andWhere(['like', $attribute, $value]);
-    } else {
-        $query->andWhere([$attribute => $value]);
+        if ($partialMatch) {
+            $query->andWhere(['like', $attribute, $value]);
+        } else {
+            $query->andWhere([$attribute => $value]);
+        }
     }
-}
 
     /**
      * @inheritdoc
@@ -48,7 +48,7 @@ class ProductSearch extends Product
             [['created_at', 'updated_at'], 'filter', 'filter' => 'strtotime', 'skipOnEmpty' => true],
             [['created_at', 'updated_at'], 'default', 'value' => null],
             [['title', 'categoryTitle'], 'safe'],
-            // [['title', 'categoryTitle', 'productTagList'], 'safe'],
+            [['title', 'categoryTitle', 'productTagList'], 'safe'],
             [['is_published'], 'boolean'],
         ];
     }
@@ -82,11 +82,11 @@ class ProductSearch extends Product
                 'id',
                 'title',
                 'is_published',
-                // 'productTagList' => [
-                //     'asc' => ['product_tag.title' => SORT_ASC],
-                //     'desc' => ['product_tag.title' => SORT_DESC],
-                //     'label' => 'Список тегов'
-                // ],
+                'productTagList' => [
+                    'asc' => ['product_tag.id' => SORT_ASC],
+                    'desc' => ['product_tag.id' => SORT_DESC],
+                    'label' => 'Список тегов'
+                ],
                 'created_at',
                 'updated_at',
                 'categoryTitle' => [
@@ -119,6 +119,12 @@ class ProductSearch extends Product
         $query->joinWith(['category' => function ($q) {
             $q->andFilterWhere(['like', 'product_category.title', $this->categoryTitle]);
         }]);
+
+        $query->joinWith(['tags' => function ($q) {
+            $q->andFilterWhere(['like', 'tag.title', $this->productTagList]);
+        }]);
+
+
 
         return $dataProvider;
     }
